@@ -32,7 +32,7 @@ MCP host connected to MCP servers to implement real-time information with LLM
 ## Basic walkthrough
 
 - [Demo video](walkthrough/MCP_Host_Demo.mp4)
-- [Example](example/loss_causes.txt) example documents created by the file system server using DB and Slack data
+- [Example](example) example documents created by the file system server using DB and Slack data
     - Does not include files with information from win/loss application
 - [servers](servers) folder containing the server setup to connect over the different applications
 - Add more servers in the ```main()``` function from ```host.py```
