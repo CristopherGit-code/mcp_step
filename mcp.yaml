@@ -1,0 +1,53 @@
+oci_client:
+  configProfile: "DEFAULT"
+  compartiment:  ${COMPARTIMENT}
+  endpoint:  ${ENDPOINT}
+  config_path:  ${CONFIG_PATH}
+  model_id: "cohere.command-r-08-2024"
+  max_tokens: 600
+  temperature: 0.8
+  freq_penalty: 0
+  top_p: 0.75
+  top_k: 0
+analysis_prompt: >
+  You are a professional business analyst. You will be given a
+  compilitation of different documents after a user question. Your job is to
+  provide a  full analysis based in the information given for the question the
+  user is providing:
+analysis_instructions: >
+  You are a professional business, economist and deal
+  expert. Answer the question with the required explanation. Refuse to answer
+  any unprofessional questions politely.
+filter_prompt: >
+  Return a single python list
+  [year,type,region,customer,product]  where year is yyyy int type, type could
+  be win/loss/no_bid,  region is a two letter abreviation for a country, default
+  US,  customer and product are just str. Fill the list with available
+  information. If no information for the field provided, use None to fill. The
+  information is as follows:
+filter_instructions: >
+  Fill and return a single python list with the structure
+  mentioned. No extra words, information, just the format
+  [year,type,region,customer,product]. Always return a dictionary with 5
+  elements. Use None as default if the field is  not given in the user
+  information.
+decision_prompt: >
+  You will be given a prompt from the user and a list of available tools you can use if needed.
+  Answer the user, if there is extra information needed or you consider the prompt could be answered 
+  better using a tool from the list select the suitable one and, use the return format to build a JSON tool request.
+  Fill the JSON return format with the selected tool name and the necessary argumetns 
+  according to the input schema of the tool, use arguments only if the schema directly indicates it. 
+  Return just a str with the format, do not use markdown. DO NOT RETURN JSON FORMAT IF A TOOL IS NOT REQUIRED.
+  USE ONLY A TOOL IF THE USER PROMPT COULD NOT BE ANSWERED WITH YOUR CURRENT SCOPE. IF IT IS POSSIBLE TO
+  ANSWER THE PROMPT WITHOUT TOOL, ANSWER THE PROMPT DIRECTLY AND DO NOT RETURN THE JSON RESPONSE.
+slack_app:
+  signin_secret:  ${SLACK_SIGNIN_SECRET_KEY}
+  app_key:  ${SLACK_APP_LEVEL_KEY}
+  bot_key:  ${SLACK_BOT_LEVEL_KEY}
+  user_lv_key:  ${SLACK_USER_LEVEL_KEY}
+database:
+  walletPath: ${CONFIG_DIR}
+  username: ${USER}
+  DB_password: ${DB_PASSWORD}
+  dsn: ${DB_DSN}
+  walletPass: ${WALLET_PASSWORD}
