@@ -1,0 +1,22 @@
+{
+    "weather":{
+        "command": "python",
+        "args": ["C:/Users/Cristopher Hdz/Desktop/Test/mcp_step/app/src/servers/weather.py"],
+        "transport": "stdio"
+    },
+    "slack":{
+        "command": "python",
+        "args": ["C:/Users/Cristopher Hdz/Desktop/Test/mcp_step/app/src/servers/slack_server.py"],
+        "transport": "stdio"
+    },
+    "files":{
+        "command": "python",
+        "args": ["C:/Users/Cristopher Hdz/Desktop/Test/mcp_step/app/src/servers/filesys_server.py"],
+        "transport": "stdio"
+    },
+    "report_analysis":{
+        "command": "python",
+        "args": ["C:/Users/Cristopher Hdz/Desktop/Test/mcp_step/app/src/servers/wl_server.py"],
+        "transport": "stdio"
+    }
+}

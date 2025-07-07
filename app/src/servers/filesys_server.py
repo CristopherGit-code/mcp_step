@@ -1,6 +1,6 @@
 from mcp.server.fastmcp import FastMCP
-import os
 from typing import Any
+import os
 
 mcp = FastMCP("file system")
 
@@ -23,9 +23,10 @@ def open_file(path:str)->str:
     
 @mcp.tool()
 def write_file(path:str, content:str)->str:
-    """Writes the content provided by the user into a file path provided by the user"""
+    """Writes content into a file path, could be provided or default, current directory"""
+    llm_data = str(content)
     with open(path,'w') as file:
-        data = "\n"+content
+        data = "\n"+llm_data
         file.write(data)
     return "File written successfully"
 

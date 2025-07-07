@@ -51,3 +51,5 @@ database:
   DB_password: ${DB_PASSWORD}
   dsn: ${DB_DSN}
   walletPass: ${WALLET_PASSWORD}
+client_settings:
+  path: C:/Users/Cristopher Hdz/Desktop/Test/mcp_step/app/src/config/server.json

@@ -22,7 +22,7 @@ class Storage:
         if not Storage._initialized:
             load_dotenv()
             self.merged_data = ''
-            self.settings = Settings("mcp.yaml")
+            self.settings = Settings("C:/Users/Cristopher Hdz/Desktop/Test/mcp_step/app/src/config/mcp.yaml")
             self.slack_client = WebClient(token=self.settings.slack_app.bot_key)
             self.slack_user = WebClient(token=self.settings.slack_app.user_lv_key)
             self.llm_client = Client(self.settings)
@@ -72,7 +72,6 @@ def get_ch_messages(channel_id:str = None, days:int = 1) -> list[Any]:
     return messages
 
 def get_messages(channel_id:str = None, days:int = 1) -> list[Any]:
-    """Returns the list of latest messages from a given channel and the days requested"""
     messages = get_ch_messages(channel_id, days)
     thread_replies = []
 
@@ -121,7 +120,7 @@ def get_workspace_channels() -> list[Any]:
 
 @mcp.tool()
 def get_user_channels(user_id:str = None) -> list[Any]:
-    """Returns the channel list from a given user, specific channels present"""
+    """Returns the channel list from a particular user id (slack user id required)"""
     if not user_id:
         return ['No user provided']
     
@@ -149,7 +148,7 @@ def get_user_channels(user_id:str = None) -> list[Any]:
 
 @mcp.tool() ##TODO: Convert into a resource or prompt
 def summarize_channel(channel_id:str = None, days:int = 1) -> str:
-    """Given a channel ID and the days, summarizes the channel messages from the past days"""
+    """Given a channel ID (slack channel IS required) and the days, summarizes the channel messages from the past days"""
     if not channel_id:
         return 'No Channel id provided'
     ch_messages = get_messages(channel_id=channel_id, days=days)

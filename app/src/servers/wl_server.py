@@ -20,7 +20,7 @@ class Storage:
         if not Storage._initialized:
             load_dotenv()
             self.merged_data = ''
-            self.settings = Settings("mcp.yaml")
+            self.settings = Settings("C:/Users/Cristopher Hdz/Desktop/Test/mcp_step/app/src/config/mcp.yaml")
             self.db = DataBase(self.settings)
             self.llm_client = Client(self.settings)
             Storage._initialized = True
@@ -73,7 +73,7 @@ def get_client_filter(prompt:str):
 ## TOOLS -----------------------------------------------------------------------
 
 @mcp.tool()
-def search_documetns_by_query(query:str = '') -> list[Any]:
+def search_documents_by_query(query:str = '') -> list[Any]:
     """Returns the available call report documents using the user query to build a DB request"""
     return get_client_filter(query)
 

@@ -4,8 +4,8 @@ from contextlib import AsyncExitStack
 from typing import Dict,Any
 import asyncio, json, logging
 from dotenv import load_dotenv
-from servers.modules.config import Settings
-from servers.modules.oci_client import Client
+from src.servers.modules.config import Settings
+from src.servers.modules.oci_client import Client
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(name=f'HOST.{__name__}')
@@ -82,7 +82,7 @@ class MCP_ConnectionManager:
 class MCP_HostManager:
     def __init__(self):
         load_dotenv()
-        self.settings = Settings("mcp.yaml")
+        self.settings = Settings("C:/Users/Cristopher Hdz/Desktop/Test/mcp_step/app/src/config/mcp.yaml")
         self.oci_llm = Client(self.settings)
         self.servers = MCP_ConnectionManager()
 
@@ -155,10 +155,10 @@ async def main():
     mcp_client_manger = MCP_ConnectionManager()
     host = MCP_HostManager()
     try:
-        await mcp_client_manger.connectToServer("slack","python",["servers/slack_server.py"])
-        await mcp_client_manger.connectToServer("wl_db","python",["servers/wl_server.py"])
-        await mcp_client_manger.connectToServer("file_system","python",["servers/filesys_server.py"])
-        await mcp_client_manger.connectToServer("weather","python",["servers/weather.py"])
+        await mcp_client_manger.connectToServer("slack","python",["C:/Users/Cristopher Hdz/Desktop/Test/mcp_step/app/src/servers/slack_server.py"])
+        await mcp_client_manger.connectToServer("wl_db","python",["C:/Users/Cristopher Hdz/Desktop/Test/mcp_step/app/src/servers/wl_server.py"])
+        await mcp_client_manger.connectToServer("file_system","python",["C:/Users/Cristopher Hdz/Desktop/Test/mcp_step/app/src/servers/filesys_server.py"])
+        await mcp_client_manger.connectToServer("weather","python",["C:/Users/Cristopher Hdz/Desktop/Test/mcp_step/app/src/servers/weather.py"])
         await host.chat_loop()
     finally:
         await mcp_client_manger.disconnect_all_clients()
