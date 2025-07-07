@@ -38,3 +38,11 @@ MCP host connected to MCP servers to implement real-time information with LLM
 - Add more servers in the ```main()``` function from ```host.py```
 - [Example](example) example documents created by the file system server using DB and Slack data
     - Does not include files with information from win/loss application
+
+# Important
+
+Update to ```venv/lib/python3.13/site-packages/langgraph/checkpoint/serde/jsonplus.py```
+
+more details could be found at: [langchain_forum](https://github.com/langchain-ai/langgraph/issues/4956)
+Fix issue for: ```Type is not msgpack serializable: AIMessage```
+Add return type for function ```def message_to_dict(msg)-> Dict[Any]:``` to avoid warning error

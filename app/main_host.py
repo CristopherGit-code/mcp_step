@@ -3,6 +3,7 @@ load_dotenv()
 from src.servers.modules.config import Settings
 from langchain_community.chat_models.oci_generative_ai import ChatOCIGenAI
 from langchain_mcp_adapters.client import MultiServerMCPClient
+from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.prebuilt import create_react_agent
 from langgraph.errors import GraphRecursionError
 import json, asyncio, logging
@@ -32,6 +33,7 @@ class LangAgent:
         self._settings = Settings("C:/Users/Cristopher Hdz/Desktop/Test/mcp_step/app/src/config/mcp.yaml")
         self._max_iterations = 6
         self.recursion_limit = 2 * self._max_iterations + 1
+        self._checkpointer = InMemorySaver()
         self._build_llm()
         await self._build_lang_agent()
         self._initialized = True
@@ -52,11 +54,14 @@ class LangAgent:
             server_data = json.loads(config_data)
             return server_data
         
-    async def _build_lang_agent(self) -> MultiServerMCPClient:
+    async def _build_lang_agent(self):
         server_data = self._get_server_connection_data()
-        self.client = MultiServerMCPClient(server_data)
-        tools = await self.client.get_tools()
-        self.agent = create_react_agent(self._llm,tools)
+        self._client = MultiServerMCPClient(server_data)
+        tools = await self._client.get_tools()
+        self.agent = create_react_agent(
+            self._llm, tools,
+            checkpointer=self._checkpointer
+        )
         logger.debug("Agent redy")
     
     async def process_query(self,query)->str:
@@ -64,7 +69,7 @@ class LangAgent:
         try:
             async for chunk in self.agent.astream(
                 {"messages":query},
-                {"recursion_limit":self.recursion_limit},
+                {"recursion_limit":self.recursion_limit,"configurable":{"thread_id":"1"}},
                 subgraphs=False,
                 stream_mode="updates"
             ):
@@ -82,6 +87,15 @@ class LangAgent:
         final_text = str(message.get('agent').get('messages')[0].get('content'))
 
         return final_text
+    
+    def thread_history(self):
+        _config = {
+            "configurable": {
+                "thread_id": "1"
+            }
+        }
+        history = list(self.agent.get_state_history(_config))
+        logger.debug(history)
 
 async def main():
     lang_agent = await LangAgent()
@@ -92,9 +106,10 @@ async def main():
 
         try:
             response = await lang_agent.process_query(query)
-            print(f"Model response:\n{response}")
+            print(f"\nModel response:\n{response}")
         except Exception as e:
-            print(f"Error in response:\n{e}")
+            print(f"\nError in response:\n{e}")
+    lang_agent.thread_history()
 
 if __name__ == "__main__":
     asyncio.run(main())
